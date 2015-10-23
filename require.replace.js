@@ -54,11 +54,14 @@
 						&& aIndexOf.call( moduleConfig.ignore, value ) >= 0 ) return;
 
 				// If there's a `paths` config, use it
-				if ( config.paths[name] ) {
-
+				var paths = config.paths[name];
+				if (paths) {
+					config.paths[name] = paths = paths instanceof Array ? paths:[paths];
+					
 					// @note: This override the defined path config to work with shimmed
 					//        modules.
-					config.paths[name] = config.paths[name].replace( pattern, value );
+					for (var i in paths)
+						paths[i] = paths[i].replace( pattern, value );
 
 					toLoad.push( name );
 					
